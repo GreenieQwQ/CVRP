@@ -27,14 +27,17 @@ class SequentialDecoder(nn.Module):
         _, hidden = self.gru(last_x, hidden)
         z = hidden[-1]
 
-        _, u = self.pointer(z, x.permute(1,0,2))
-        u = u.masked_fill_(~mask, -np.inf)
-        probs = self.sm(u)
+        # attn: batch first = false
+        _, u = self.pointer(z.unsqueeze(0), x.permute(1,0,2), x.permute(1,0,2))
+        u = u.permute(1,0,2)
+        u = u.masked_fill_(mask, -np.inf)
+        # probs = self.sm(u)
+        probs = u.squeeze(1)
         if strategy == "sample":
             ind = torch.multinomial(probs, num_samples=1)
         else:
             ind = torch.max(probs, dim=1)[1].unsqueeze(1)
-        probability = probs[batch_idx, ind].squeeze(1)
+        probability = probs[batch_idx, ind]
         # ind->下一个index
         # prob 这个步骤选取index的prob
         # hidden 用于传递给下一级的隐状态
