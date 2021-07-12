@@ -4,11 +4,15 @@
 
 - 需要继续编写的部分
 
-    - 使用dataset、dataloader等封装`train.py`    
+    - **使用dataset、dataloader等封装`train.py`**    
 
-    - batch化训练
+    - **batch化训练**
+  
+    - **在decode阶段加入考虑约束的mask**
+  
+      - 注：利用简单的与或操作即可实现
     
-    - 可视化
+    - 可视化（绘图）
 
 - 可改进的部分
 
