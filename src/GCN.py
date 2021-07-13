@@ -33,8 +33,8 @@ class GCN(nn.Module):
         # edge = torch.cat([dis.unsqueeze(3), timedis.unsqueeze(3)], dim=3)
         edge = dis.unsqueeze(3)
         self_edge = (torch.arange(0, node_num).unsqueeze(0)).T.unsqueeze(0).repeat(batch_size, 1, 1).to(device)
-        order = dis.sort(2)[1]
-        neighbor_index = order[:, :, 1:self.k+1]
+        order = dis.sort(2)[1]  # aij = -1
+        neighbor_index = order[:, :, 1:self.k+1]    # aij = 1
         a = torch.zeros_like(dis)
         a = torch.scatter(a, 2, neighbor_index, 1)
         a = torch.scatter(a, 2, self_edge, -1).to(device)

@@ -2,10 +2,10 @@ import torch.nn as nn
 import torch
 
 class ClassificationDecoder(nn.Module):
-    def __init__(self, hidden_dim):
+    def __init__(self, input_dim):
         super(ClassificationDecoder, self).__init__()
         self.MLP = nn.Sequential(
-            nn.Linear(hidden_dim, 256),
+            nn.Linear(input_dim, 256),
             nn.ReLU(),
             nn.Linear(256, 256),
             nn.ReLU(),
